@@ -234,7 +234,75 @@ Example test_blt_nat3:             (blt_nat 4 2) = false.
 Proof. simpl. reflexivity.  Qed.
 (** [] *)
 
-Eval Simpl in (minus 4 5).
+Eval simpl in (minus 4 5).
+
+Theorem plus_0_n: forall n:nat, 0 + n = n.
+Proof. simpl. reflexivity. Qed.
+
+Theorem plus_0_n': forall n:nat, 0 + n = n.
+Proof. reflexivity. Qed.
+
+Eval simpl in (forall n:nat, n + 0 = n).
+Eval simpl in (forall n:nat, 0 + n = n).
+
+Theorem plus_0_n'': forall n:nat, 0 + n = n.
+Proof. intros n. reflexivity. Qed.
+
+Theorem plus_1_l: forall n:nat, 1 + n = S n.
+Proof. intros n. reflexivity. Qed.
+
+Theorem multi_0_l: forall n:nat, 0 * n = 0.
+Proof. intros n. reflexivity. Qed.
+
+
+Theorem plus_id_example: forall n m:nat,
+  n = m -> n + n = m + m.
+Proof. intros n m. intros H. rewrite <- H. reflexivity. Qed.
+
+Theorem plus_id_exercise: forall n m o:nat,
+  n = m -> m = o -> n + m = m + o.
+Proof. intros n m o. intros H1. intros H2. rewrite -> H1. rewrite -> H2. reflexivity. Qed.
+
+Theorem multi_0_plus: forall n m: nat,
+  (0 + n) * m = n * m.
+Proof.
+  intros n m.
+  rewrite -> plus_O_n.
+  reflexivity. Qed.
+
+Theorem mult_1_plus: forall n m:nat,
+  (1 + n) * m = m + (n * m).
+Proof.
+  intros n m.
+  rewrite plus_1_l.
+  simpl.
+  reflexivity. Qed.
+
+Theorem plus_1_neq_0_firsttry: forall n: nat,
+  beq_nat (n + 1) 0 = false.
+Proof.
+  intros n.
+  simpl.
+  Admitted.
+
+Theorem plus_1_neq_0: forall n: nat,
+  beq_nat (n + 1) 0 = false.
+Proof.
+  intros n. destruct n as [| n'].
+  reflexivity.
+  simpl.
+  reflexivity. Qed.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
