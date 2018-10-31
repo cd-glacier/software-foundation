@@ -1,3 +1,5 @@
+(* http://proofcafe.org/sf/Basics_J.html *)
+
 Inductive day : Type :=
   | monday : day
   | tuesday : day
@@ -285,24 +287,41 @@ Proof.
   simpl.
   Admitted.
 
+(* TODO: I could not understand *)
 Theorem plus_1_neq_0: forall n: nat,
   beq_nat (n + 1) 0 = false.
 Proof.
   intros n. destruct n as [| n'].
+  simpl.
   reflexivity.
   simpl.
   reflexivity. Qed.
 
+Theorem negb_involutive: forall b: bool, negb (negb b) = b.
+Proof.
+  intros b. destruct b.
+  reflexivity.
+  reflexivity. Qed.
 
+Theorem zero_nbeq_plus_1: forall n: nat,
+  beq_nat 0 (n + 1) = false.
+Proof.
+  intros n.
+  destruct n as [|n'].
+  reflexivity.
+  reflexivity.
+  Qed.
 
+Require String. Open Scope string_scope.
 
+Ltac move_to_top x :=
+  match reverse goal with
+  | H : _ |- _ => try move x after H
+  end.
 
-
-
-
-
-
-
-
+Tactic Notation "assert_eq" ident(x) constr(v) :=
+  let H:= fresh in
+  assert (x = v) as H by reflexivity;
+  clear H.
 
 
