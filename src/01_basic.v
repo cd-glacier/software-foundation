@@ -324,4 +324,21 @@ Tactic Notation "assert_eq" ident(x) constr(v) :=
   assert (x = v) as H by reflexivity;
   clear H.
 
+Tactic Notation "Case_aux" ident(x) constr(name) :=
+  first [
+    set ( x := name ); move_to_top x
+  | assert_eq x name; move_to_top x
+  | fail 1 "becase we are working on a different case" ].
+
+Tactic Notation "Case" constr(name) := Case_aux Case name.
+Tactic Notation "SCase" constr(name) := Case_aux SCase name.
+Tactic Notation "SSCase" constr(name) := Case_aux SSCase name.
+Tactic Notation "SSSCase" constr(name) := Case_aux SSSCase name.
+Tactic Notation "SSSSCase" constr(name) := Case_aux SSSSCase name.
+Tactic Notation "SSSSSCase" constr(name) := Case_aux SSSSSCase name.
+Tactic Notation "SSSSSSCase" constr(name) := Case_aux SSSSSSCase name.
+Tactic Notation "SSSSSSSCase" constr(name) := Case_aux SSSSSSSCase name.
+Tactic Notation "SSSSSSSSCase" constr(name) := Case_aux SSSSSSSSCase name.
+Tactic Notation "SSSSSSSSSCase" constr(name) := Case_aux SSSSSSSSSCase name.
+Tactic Notation "SSSSSSSSSSCase" constr(name) := Case_aux SSSSSSSSSSCase name.
 
