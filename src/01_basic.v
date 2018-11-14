@@ -463,5 +463,79 @@ Proof.
     reflexivity.
 Qed.
 
+Theorem plus_assoc': forall n m p: nat,
+  n + (m + p) = (n + m) + p.
+Proof.
+  intros n m p.
+  induction n as [| n'].
+  reflexivity.
+  simpl.
+  rewrite -> IHn'.
+  reflexivity.
+Qed.
+
+Theorem plus_assoc: forall n m p: nat,
+  n + (m + p) = (n + m) + p.
+Proof.
+  intros n m p.
+  induction n as [| n'].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n".
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+Qed.
+
+(* TODO: I have not be able to understand *)
+Theorem plus_comm': forall n m: nat,
+  n + m = m + n.
+Proof.
+  intros n m. induction n as [| n'].
+  rewrite -> plus_0_r.
+  reflexivity.
+  simpl.
+  rewrite -> IHn'.
+  rewrite -> plus_n_Sm.
+  reflexivity.
+Qed.
+
+Theorem mult_0_plus': forall n m: nat,
+  (0 + n) * m = n * m.
+Proof.
+  intros n m.
+  assert(H: 0 + n = n).
+    Case "Proof of assertion".
+      reflexivity.
+  rewrite -> H.
+  reflexivity.
+Qed.
+
+Theorem plus_rearrange_firstry: forall n m p q:nat,
+  (n + m) + (p + q) = (m + n) + (p + q).
+Proof.
+  intros n m p q.
+  rewrite -> plus_comm.
+Admitted.
+
+Theorem plus_rearrange: forall n m p q: nat,
+  (n + m) + (p + q) = (m + n) + (p + q).
+Proof.
+  intros n m p q.
+  assert(H: n + m = m + n).
+    Case "Proof of assertion".
+      rewrite -> plus_comm.
+      reflexivity.
+  rewrite -> H.
+  reflexivity.
+Qed.
+
+(* ???? *)
+Theorem plus_swap: forall n m p: nat,
+  n + (m + p) = m + (n + p).
+Proof.
+  intros n m p.
+Qed.
+
 
 
