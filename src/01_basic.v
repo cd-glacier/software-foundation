@@ -287,7 +287,6 @@ Proof.
   simpl.
   Admitted.
 
-(* TODO: I could not understand *)
 Theorem plus_1_neq_0: forall n: nat,
   beq_nat (n + 1) 0 = false.
 Proof.
@@ -341,4 +340,128 @@ Tactic Notation "SSSSSSSCase" constr(name) := Case_aux SSSSSSSCase name.
 Tactic Notation "SSSSSSSSCase" constr(name) := Case_aux SSSSSSSSCase name.
 Tactic Notation "SSSSSSSSSCase" constr(name) := Case_aux SSSSSSSSSCase name.
 Tactic Notation "SSSSSSSSSSCase" constr(name) := Case_aux SSSSSSSSSSCase name.
+
+Theorem andb_true_elim1: forall b c: bool, andb b c = true -> b = true.
+Proof.
+  intros b c H.
+  destruct b.
+  Case "b = true".
+    reflexivity.
+  Case "b = false".
+    rewrite <- H. simpl. reflexivity. Qed.
+
+Theorem andb_true_elim2: forall b c: bool, andb b c = true -> c = true.
+Proof.
+  intros b c H.
+  destruct c.
+  Case "c = true".
+    reflexivity.
+  Case "c = false".
+    destruct b.
+      SCase "b = true".
+        rewrite <- H.
+        reflexivity.
+      SCase "b = false".
+        rewrite <- H.
+        reflexivity.
+Qed.
+
+Theorem plus_0_r_firstty: forall n:nat, n + 0 = n.
+Proof.
+  intros n.
+  simpl. Admitted.
+
+Theorem plus_0_r_secondtry: forall n:nat, n + 0 = n.
+Proof.
+  intros n.
+  destruct n as [| n'].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n".
+    simpl.
+    Admitted.
+
+Theorem plus_0_r: forall n:nat, n + 0 = n.
+Proof.
+  intros n. induction n as [| n'].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n".
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+Qed.
+
+Theorem minus_diag: forall n, minus n n = 0.
+Proof.
+  intros n. induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+  Case "n = S n".
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+Qed.
+
+Theorem mult_0_r: forall n:nat, n * 0 = 0.
+Proof.
+  intros n. induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+  Case "n = S n".
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+Qed.
+
+Theorem plus_n_Sm: forall n m:nat, S(n + m) = n + S(m).
+Proof.
+  intros n m.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+  Case "n = S n".
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+Qed.
+
+Theorem plus_comm: forall n m: nat, n + m = m + n.
+Proof.
+  intros n m. induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    rewrite -> plus_0_r.
+    reflexivity.
+  Case "n = S n".
+    simpl.
+    rewrite -> IHn'.
+    rewrite -> plus_n_Sm.
+    reflexivity.
+Qed.
+
+Fixpoint double (n:nat) := 
+  match n with
+  |O => O
+  |S n' => S(S(double n'))
+  end.
+
+Lemma double_plus: forall n, double n = n + n.
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+  Case "n = S n".
+    simpl.
+    rewrite -> IHn'.
+    rewrite -> plus_n_Sm.
+    reflexivity.
+Qed.
+
+
 
