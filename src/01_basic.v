@@ -487,7 +487,6 @@ Proof.
     reflexivity.
 Qed.
 
-(* TODO: I have not be able to understand *)
 Theorem plus_comm': forall n m: nat,
   n + m = m + n.
 Proof.
@@ -530,11 +529,46 @@ Proof.
   reflexivity.
 Qed.
 
-(* ???? *)
 Theorem plus_swap: forall n m p: nat,
   n + (m + p) = m + (n + p).
 Proof.
   intros n m p.
+  assert(H1: n + (m + p) = (n + m) + p).
+    Case "Proof of assertion".
+      rewrite -> plus_assoc.
+      reflexivity.
+  assert(H2: m + (n + p) = (m + n) + p).
+    Case "Proof of assertion".
+      rewrite -> plus_assoc.
+      reflexivity.
+  assert(H3: n + m = m + n).
+    Case "Prof of assertion".
+    rewrite -> plus_comm.
+    reflexivity.
+  rewrite -> H1.
+  rewrite -> H3.
+  rewrite -> H2.
+  reflexivity.
+Qed.
+
+Theorem mult_comm: forall m n: nat,
+ m * n = n * m.
+Proof.
+  intros n m.
+  induction n as [| n'].
+    Case "n = 0".
+      rewrite -> mult_0_r.
+      reflexivity.
+      simpl.
+    Case "n = S n".
+      simpl.
+      assert(H: m * S n' = m + m * n').
+        destruct m as [| m'].
+          SCase "m = 0".
+            simpl.
+            reflexivity.
+          SCase "m = S m".
+            simpl.
 Qed.
 
 
