@@ -551,25 +551,45 @@ Proof.
   reflexivity.
 Qed.
 
-Theorem mult_comm: forall m n: nat,
- m * n = n * m.
+Theorem mult_1_plus' : forall n m : nat,
+  n * (1 + m) = n + (n * m).
 Proof.
   intros n m.
-  induction n as [| n'].
-    Case "n = 0".
-      rewrite -> mult_0_r.
-      reflexivity.
-      simpl.
-    Case "n = S n".
-      simpl.
-      assert(H: m * S n' = m + m * n').
-        destruct m as [| m'].
-          SCase "m = 0".
-            simpl.
-            reflexivity.
-          SCase "m = S m".
-            simpl.
+  simpl.
+  induction n as [ | n'].
+  Case "n = 0".
+    simpl. reflexivity.
+  Case "n = S n'".
+    simpl. rewrite -> IHn'. rewrite -> plus_swap. reflexivity.
 Qed.
 
+Theorem mult_comm : forall m n : nat,
+  m * n = n * m.
+Proof.
+  intros.
+  induction m as [| m'].
+  Case "m = 0".
+    simpl. rewrite -> mult_0_r. reflexivity.
+  Case "m = S m'".
+    rewrite -> mult_1_plus.
+    rewrite -> mult_1_plus'.
+    rewrite -> IHm'.
+    reflexivity.
+Qed.
 
+Theorem evenb_n__oddb_Sn: forall n: nat,
+  evenb n = negb (evenb (S n)).
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite -> IHn'.
+    rewrite -> negb_involutive.
+    simpl.
+    reflexivity.
+Qed.
 
